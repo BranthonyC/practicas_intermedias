@@ -1,15 +1,14 @@
 {% extends '_base.html' %}
 
 {% block title %}
-Lista de usuarios
+Lista de productos
 {% endblock title %}
 
 {% block content %}
-    {% for cliente in lista_clientes %}
-        <p>{{cliente.nombre}}</p>
-        <p>{{cliente.nit}}</p>
-        <p>{{cliente.dpi}}</p>
-        <p>{{cliente.direccion}}</p>
+    {% for producto in lista_productos %}
+        <p>{{producto.sku}}</p>
+        <p>{{producto.codigo_barras}}</p>
+        <p>{{producto.nombre}}</p>
         <a href="{% url 'cliente_detail' pk=cliente.pk %}" class="btn btn-primary">
             Detalle {{cliente.nombre}}
         </a>

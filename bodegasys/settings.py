@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Local Apps
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
+    'producto.apps.ProductoConfig',
 
 ]
 
