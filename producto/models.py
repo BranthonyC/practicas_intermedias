@@ -9,7 +9,7 @@ class Producto(models.Model):
     descripcion = models.CharField(max_length=150)
     categorias = models.CharField(max_length=150)
     precio = models.CharField(max_length=20)
-    
+    cantidad = models.IntegerField()
     class Meta:
         verbose_name = "Producto"
         verbose_name_plural = "Productos"
@@ -19,5 +19,11 @@ class Producto(models.Model):
 
 
 class Categoria(models.Model):
-    id = models.IntegerField()
     nombre_categoria=models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.nombre_categoria
+
+class DetalleCategorias(models.Model):
+    producto = models.ForeignKey('Producto',on_delete=models.SET_NULL, null=True)
+    categoria=models.ForeignKey('Categoria',on_delete=models.SET_NULL, null=True)

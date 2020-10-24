@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Lista de productos
+{% endblock title %}
+
+{% block content %}
+    {% for producto in lista_productos %}
+        <p>{{producto.sku}}</p>
+        <p>{{producto.codigo_barras}}</p>
+        <p>{{producto.nombre}}</p>
+        <a href="{% url 'cliente_detail' pk=cliente.pk %}" class="btn btn-primary">
+            Detalle {{cliente.nombre}}
+        </a>
+    {% endfor %}
+{% endblock content %}
