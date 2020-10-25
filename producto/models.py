@@ -20,6 +20,9 @@ class Producto(models.Model):
 
 class Categoria(models.Model):
     nombre_categoria=models.CharField(max_length=50)
+    class Meta:
+        verbose_name = "Categoria"
+        verbose_name_plural = "Categorias"
 
     def __str__(self):
         return self.nombre_categoria
@@ -27,3 +30,14 @@ class Categoria(models.Model):
 class DetalleCategorias(models.Model):
     producto = models.ForeignKey('Producto',on_delete=models.SET_NULL, null=True)
     categoria=models.ForeignKey('Categoria',on_delete=models.SET_NULL, null=True)
+
+class Historial_Cambios(models.Model):
+    producto=models.ForeignKey('Producto',on_delete=models.SET_NULL, null=True)
+    cantidad_antigua=models.IntegerField()
+    cantidad_nueva=models.IntegerField()
+    motivo=models.CharField(max_length=150)
+    bodeguero=models.CharField(max_length=50)
+    fecha=models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = "Historial_Cambio"
+        verbose_name_plural = "Historial_Cambios"

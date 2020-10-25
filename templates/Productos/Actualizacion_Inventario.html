@@ -1,16 +1,31 @@
 {% extends '_base.html' %}
 
 {% block title %}
-Lista de productos
+Actualizar un producto
 {% endblock title %}
 
 {% block content %}
-    {% for producto in lista_productos %}
-        <p>{{producto.sku}}</p>
-        <p>{{producto.codigo_barras}}</p>
-        <p>{{producto.nombre}}</p>
-        <a href="{% url 'cliente_detail' pk=cliente.pk %}" class="btn btn-primary">
-            Detalle {{cliente.nombre}}
-        </a>
-    {% endfor %}
-{% endblock content %}
+<a href="{% url 'Registrar_producto' %}" class="btn btn-info">Registrar Nuevo Producto</a>
+<a href="{% url 'Historial_productos' %}" class="btn btn-info">Ver historial inventario</a>
+<div class="container text-center pt-5">
+    <h1>Actualizar Inventario</h1>
+    <div class='jumbotron'>
+      <center>
+        <div class="text-left" style="max-width:500px">
+          <form action="{% url 'Actualizar_Inventario' %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class='form-group'>
+              <label for="{{ field.name }}">{{ field.label }}</label>
+              {{ field }}
+            </div>
+            {% endfor %}
+            <br>
+            <center><button type="submit" class="btn btn-success btn-lg">Actualizar Inventario</button></center>
+          </form>
+        </div>
+      </center>
+    </div>
+  </div>
+ 
+  {% endblock content %}
