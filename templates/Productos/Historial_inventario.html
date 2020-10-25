@@ -1,0 +1,25 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Lista de usuarios
+{% endblock title %}
+
+{% block content %}
+<div class="container text-center pt-5"></div>
+<div class='jumbotron'>
+    <center>
+    {% for cambio in cambios %}
+        <p>Nombre del producto: {{cambio.producto}}</p>
+        <p>Cantidad Antigua en inventario:{{cambio.cantidad_antigua}}</p>
+        <p>Cantidad nueva en inventario:{{cambio.cantidad_nueva}}</p>
+        <p>Motivo del cambio:{{cambio.motivo}}</p>
+        <p>Bodeguero que realizo el cambio:{{cambio.bodeguero}}</p>
+        <p>Fecha del cambio:{{cambio.fecha}}</p>
+        
+        <hr><hr>
+    {% endfor %}
+</center>
+</div>
+</div>
+    <a href="{% url 'Actualizar_Inventario'  %}" class="btn btn-primary">Regresar</a>
+{% endblock content %}
