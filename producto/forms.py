@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Producto,Historial_Cambios,Categoria,DetalleCategorias
+from .models import Producto,Historial_Cambios,Categoria,DetalleCategorias,SolicitudTransferenciaProductos,DetalleTransferencias
 
 
 class Historial_Cambios_FORM(forms.Form):   
@@ -51,3 +51,26 @@ class DetalleCategoriasForm(forms.ModelForm):
             'producto',
             'categoria'
         ]
+
+class SolicitarTransferenciaForm(forms.ModelForm):
+    class Meta:
+        model = SolicitudTransferenciaProductos
+        fields = [
+            'tipo_transferencia',
+            'bodega_origen',
+            'bodega_destino'
+        ]
+
+class DetalleTransferenciasForm(forms.ModelForm):
+    class Meta:
+        model = DetalleTransferencias
+        fields = [
+            'producto',
+            'transferencia',
+            'cantidad'
+        ]
+
+class AceptarTransferenciaForm(forms.Form):
+    repartidor=forms.CharField(max_length=25)
+    aceptador=forms.CharField(max_length=25)
+    

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import Historial_Cambios_FORM,ProductoForm,CategoriaForm,DetalleCategoriasForm
+from .forms import Historial_Cambios_FORM,ProductoForm,CategoriaForm,DetalleCategoriasForm,SolicitarTransferenciaForm,DetalleTransferenciasForm,AceptarTransferenciaForm
 from .models import *
 # Create your views here.
 def Actualizar_Inventario(request):
@@ -66,3 +66,52 @@ def Registrar_producto(request):
 def Historial_productos(request):
     cambios=Historial_Cambios.objects.all()
     return render(request,'Productos/Historial_inventario.html',{'cambios': cambios})
+
+def SolicitarTransferencia(request):
+    print("HOLA MUNDO"+request.method)
+    if request.method == 'POST':
+        form1 = SolicitarTransferenciaForm(request.POST)
+        form2=DetalleTransferenciasForm(request.POST)
+        if form1.is_valid():
+            print("FORM1")
+            producto=form1.save(commit=False)
+            producto.solicitante="Usuario Bodeguero"
+            producto.estado_transferencia="PENDIENTE"
+            producto.save()
+            messages.success(request, 'Solicitud realizada correctamente, numero transferencia: '+str(producto.pk))
+            return redirect('SolicitarTransferencia')  
+        elif form2.is_valid():
+            print("FORM2")
+            categoria=form2.save(commit=False)
+            categoria.save()
+            messages.success(request, 'Peticion de productos registrada correctamente')
+            return redirect('SolicitarTransferencia')  
+    else:
+        form1=SolicitarTransferenciaForm()
+        form2=DetalleTransferenciasForm()
+    return render(request,'Productos/SolicitudesTransferencias.html',{'form1': form1,'form2': form2  })
+
+def Ver_solicitudes(request):
+    
+    Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='PENDIENTE')
+    return render(request,'Productos/Aceptar_solicitudes.html',{'Solicitudes': Solicitudes})
+
+def Aceptar_Solicitudes(request,pk):
+    if request.method=='POST':
+        form=AceptarTransferenciaForm(request.POST)
+        if form.is_valid():
+            print("asdsad  "+str(pk))
+            rep = form.cleaned_data['repartidor']
+            acept = form.cleaned_data['aceptador']
+            soli=SolicitudTransferenciaProductos.objects.get(pk=pk)
+            soli.repartidor=rep
+            soli.aceptador=acept
+            soli.estado_transferencia="ACEPTADA"
+            soli.save()
+            messages.success(request, 'Se acepto la solicitud '+str(pk)+ ' satisfactoriamente')
+            return redirect('Ver_solicitudes')
+    if request.method=='GET':
+        Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='PENDIENTE')
+        Solicitud=SolicitudTransferenciaProductos.objects.get(pk=pk)
+        form=AceptarTransferenciaForm()
+        return render(request,'Productos/Aceptar_solicitudes.html',{'Solicitud_seleccionada': Solicitud,'Solicitudes': Solicitudes,'form':form})

@@ -1,0 +1,65 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Regsitrar Producto
+{% endblock title %}
+
+{% block content %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>    
+{% endif %}
+
+<a href="{% url 'Ver_solicitudes' %}" class="btn btn-info">Solicitudes de transferencias</a>
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <div class="container text-center pt-5">
+          <h1>REALIZAR NUEVA SOLICITUD</h1>
+          <div class='jumbotron'>
+            <center>
+              <div class="text-left" style="max-width:500px">
+                <form action="{% url 'SolicitarTransferencia' %}" method="post">
+                  {% csrf_token %}
+                  {% for field in form1 %}
+                  <div class='form-group'>
+                    <label for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                  </div>
+                  {% endfor %}
+                  <br>
+                  <center><button type="submit" class="btn btn-success btn-lg">Registrar Solicitud</button></center>
+                </form>
+              </div>
+            </center>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="container text-center pt-5">
+          <h1>AGREGAR PRODUCTOS A LA SOLICITUD</h1>
+          <div class='jumbotron'>
+            <center>
+              <div class="text-left" style="max-width:500px">
+                <form action="{% url 'SolicitarTransferencia' %}" method="post">
+                  {% csrf_token %}
+                  {% for field in form2 %}
+                  <div class='form-group'>
+                    <label for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                  </div>
+                  {% endfor %}
+                  <br>
+                  <center><button type="submit" class="btn btn-success btn-lg">Agregar Solicitud</button></center>
+                </form>
+              </div>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock content %}

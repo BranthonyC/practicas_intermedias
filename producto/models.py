@@ -41,3 +41,30 @@ class Historial_Cambios(models.Model):
     class Meta:
         verbose_name = "Historial_Cambio"
         verbose_name_plural = "Historial_Cambios"
+
+TIPO_TRANSFERENCIAS = (
+    ('INTERNA','INTERNA'), 
+    ('EXTERNA', 'EXTERNA'), 
+) 
+ESTADO_TRANSFERENCIAS = (
+    ('PENDIENTE','PENDIENTE'), 
+    ('ACEPTADA', 'ACEPTADA'),
+    ('COMPLETADA', 'COMPLETADA'), 
+) 
+class SolicitudTransferenciaProductos(models.Model):
+    solicitante=models.CharField(max_length=50)
+    tipo_transferencia=models.CharField(choices=TIPO_TRANSFERENCIAS,max_length=20)
+    bodega_origen=models.CharField(max_length=50)
+    bodega_destino=models.CharField(max_length=50)
+    estado_transferencia=models.CharField(choices=ESTADO_TRANSFERENCIAS,max_length=20)
+    repartidor=models.CharField(max_length=50,blank=True)
+    aceptador=models.CharField(max_length=50,blank=True)
+    def __str__(self):
+        return str(self.pk)
+
+class DetalleTransferencias(models.Model):
+    producto = models.ForeignKey('Producto',on_delete=models.SET_NULL, null=True)
+    transferencia=models.ForeignKey('SolicitudTransferenciaProductos',on_delete=models.SET_NULL, null=True)
+    cantidad = models.IntegerField()
+    def __str__(self):
+        return str(self.pk)
