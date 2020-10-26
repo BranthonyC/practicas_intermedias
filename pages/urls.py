@@ -13,4 +13,5 @@ urlpatterns = [
     path('ver_solicitudes/<int:pk>',Aceptar_Solicitudes, name="Aceptar_Solicitudes"),
     
     
+   
 ]

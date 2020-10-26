@@ -3,6 +3,9 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from users.models import Cliente
 
+## 
+
+
 class HomePageView(TemplateView):
     template_name='pages/home.html'
 

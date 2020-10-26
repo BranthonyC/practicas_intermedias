@@ -5,6 +5,7 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import Cliente
 
 
+<<<<<<< HEAD
 CustomUser = get_user_model()
 
 class CustomUserAdmin( UserAdmin): 
@@ -21,3 +22,5 @@ class ClienteAdmin(admin.ModelAdmin):
 
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register( CustomUser, CustomUserAdmin)
+=======
+>>>>>>> feature/Clientes

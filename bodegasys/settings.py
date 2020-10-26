@@ -46,8 +46,13 @@ INSTALLED_APPS = [
     # Local Apps
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
+<<<<<<< HEAD
     'producto.apps.ProductoConfig',
 
+=======
+    
+    'cliente', #kelvin
+>>>>>>> feature/Clientes
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
