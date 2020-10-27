@@ -3,16 +3,33 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from datetime import datetime 
 from django.contrib import messages
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 from .forms import *
 from .models import *
 from users.models import *
+
+
+class BodegaListView(ListView):
+    model = Bodega
+    template_name = "bodegas/lista_bodegas.html"
+    context_object_name = "lista_bodegas"
+
+    def get_queryset(self):
+        return Bodega.objects.filter(creador=self.kwargs['id']).order_by('id')
+
+
+class BodegaDetailView(DetailView):
+    model = Bodega
+    template_name = "bodegas/bodega.html"
+    context_object_name = "bodega"
 
 
 def CrearBodega(request, id):
     p = "2"
     #usuarios = CustomUser.objects.get(username="henry-leon")
     #print("hola")
-    #print (usuarios.id)
+    #print (usuarios.id){% url 'lista_bodegas' user.id %}
 
     prueba = CustomUser.objects.get(pk=id)
     print (prueba)
@@ -26,8 +43,9 @@ def CrearBodega(request, id):
             bodega.creador = prueba
             bodega.save()
             print("Exito")
-            messages.success(request, 'Bodega registrada correctamente')
-            return redirect ('home')
+            #messages.success(request, 'Bodega registrada correctamente')
+            return HttpResponseRedirect('/lista_bodegas/'+id)
+            #return redirect ('home')
     else:
         form1=bodega_forms()
     return render(request,'bodegas/registro_bodega.html',{'form1': form1})

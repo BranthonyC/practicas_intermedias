@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+{% block title %}
+Bodega {{user.username}}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-5">
+        <div class="container text-center pt-6">
+          <div class='jumbotron'>
+              <div class="text-left" style="max-width:500px">
+                <h2 style="text-align: center;"><b>{{bodega.nombre}}</b></h2>
+                <h4><b>Dirección: </b>{{bodega.direccion}}</h4>
+                <h4><b>Estado: </b>{{bodega.estado}}</h4>
+                <h4><b>Encargado: </b>{{bodega.encargado}}</h4><br>
+                <a style="text-align: center;" href="{% url 'bodega_detail' pk=bodega.pk %}" class="btn btn-info">
+                    ver Detalle {{bodega.nombre}}
+                </a>
+              </div>
+          </div>
+        </div>
+      </div>    
+    </div>
+  </div>
+{% endblock content %}

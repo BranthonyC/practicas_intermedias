@@ -16,5 +16,7 @@ urlpatterns = [
     
     #bodegas
     path('registrar_bodega/<id>',CrearBodega, name="Registrar_bodega"),
+    path('lista_bodegas/<id>', BodegaListView.as_view(), name = 'lista_bodegas' ),
+    path('bodegas/<int:pk>', BodegaDetailView.as_view(), name="bodega_detail"),
    
 ]
