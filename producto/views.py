@@ -120,6 +120,7 @@ def Aceptar_Solicitudes(request,pk):
         return render(request,'Productos/Aceptar_solicitudes.html',{'Solicitud_seleccionada': Solicitud,'Solicitudes': Solicitudes,'form':form})
 
 def Aceptar_Trasferencias(request,pk):
+    current_user = request.user
     if request.method=='POST':
         print("asdsad  "+str(pk))
         soli=SolicitudTransferenciaProductos.objects.get(pk=pk)
@@ -129,7 +130,7 @@ def Aceptar_Trasferencias(request,pk):
         return redirect('Ver_transferencias')
     if request.method=='GET':
         print("asdsad  ")
-        Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='ACEPTADA')
+        Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='ACEPTADA',repartidor_asignado = current_user.id)
         Solicitud=SolicitudTransferenciaProductos.objects.get(pk=pk)
         form=TerminarTransferenciaForm()
         return render(request,'Productos/Aceptar_Trasferencias.html',{'Solicitud_seleccionada': Solicitud,'Solicitudes': Solicitudes,'form':form})
