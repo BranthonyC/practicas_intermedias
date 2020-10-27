@@ -13,4 +13,4 @@ class Cliente(models.Model):
         verbose_name_plural = "Clientes"
     
     def __str__(self):
-        return self.dpi
+        return self.nombre
