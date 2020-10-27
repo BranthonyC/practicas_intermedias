@@ -1,0 +1,41 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Regsitrar Producto
+{% endblock title %}
+
+{% block content %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>    
+{% endif %}
+
+
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-5">
+        <div class="container text-center pt-6">
+          <h1>REGISTRAR NUEVA BODEGA</h1>
+          <div class='jumbotron'>
+              <div class="text-left" style="max-width:500px">
+                <form action="{% url 'Registrar_bodega' user.id %}" method="post">
+                  {% csrf_token %}
+                  {% for field in form1 %}
+                  <div class='form-group'>
+                    <label for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                  </div>
+                  {% endfor %}
+                  <br>
+                  <button type="submit" class="btn btn-success btn-lg">Registrar Bodega</button>
+                </form>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock content %}

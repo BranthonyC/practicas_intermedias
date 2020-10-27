@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import HomePageView, ClienteListView, ClienteDetailView
 from producto.views import Actualizar_Inventario,Registrar_producto,Historial_productos,SolicitarTransferencia,Ver_solicitudes,Aceptar_Solicitudes
+from bodegas.views import *
+
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('clientes/', ClienteListView.as_view(), name = 'lista_clientes' ),
@@ -12,6 +14,7 @@ urlpatterns = [
     path('ver_solicitudes/',Ver_solicitudes, name="Ver_solicitudes"),
     path('ver_solicitudes/<int:pk>',Aceptar_Solicitudes, name="Aceptar_Solicitudes"),
     
-    
+    #bodegas
+    path('registrar_bodega/<id>',CrearBodega, name="Registrar_bodega"),
    
 ]

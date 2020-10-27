@@ -1,11 +1,17 @@
 from django.db import models
 from users.models import CustomUser
 
-# Create your models here.
+
+tipo_estado = (
+    ('ACTIVA','ACTIVA'), 
+    ('INACTIVA', 'INACTIVA'), 
+) 
+
 class Bodega(models.Model):
     nombre = models.CharField(max_length=50)
     direccion = models.CharField(max_length=150)
-    estado = models.CharField(max_length=30)
+    estado=models.CharField(choices=tipo_estado,max_length=10)
+    creador = models.ForeignKey(CustomUser, related_name="creador_bodegas", on_delete=models.CASCADE, blank=True, null=True)
     encargado = models.ForeignKey(CustomUser, related_name="encargados_bodegas", on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
