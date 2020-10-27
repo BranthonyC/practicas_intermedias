@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'producto.apps.ProductoConfig',
     'cliente',
+    'sedes'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
