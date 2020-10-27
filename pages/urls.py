@@ -19,5 +19,6 @@ urlpatterns = [
     path('lista_bodegas/<id>', BodegaListView.as_view(), name = 'lista_bodegas' ),
     path('bodegas/<int:pk>', BodegaDetailView.as_view(), name="bodega_detail"),
     path('modificar_bodega/<id>/<user_id>', modificar_bodega, name='modificar_bodega'),
+    path('eliminar_bodega/<id>/<user_id>', eliminar_bodega, name='eliminar_bodega'),
    
 ]

@@ -64,3 +64,9 @@ def modificar_bodega(request,id,user_id):
             data['form'] = formulario
             return HttpResponseRedirect('/lista_bodegas/'+user_id)
     return render(request, 'bodegas/modificar_bodega.html',data)
+
+
+def eliminar_bodega(request,id,user_id):
+    bodega = Bodega.objects.get(pk=id)
+    bodega.delete()
+    return HttpResponseRedirect('/lista_bodegas/'+user_id)
