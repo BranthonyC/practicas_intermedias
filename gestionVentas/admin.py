@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import Venta,ListaProductos
 # Register your models here.
-
+## SOLO EL VENDEDOR PUEDE CREAR VENTAS
 class gestionVentasAdmin(admin.ModelAdmin):
         model = Venta
         list_display = ['no_orden','cliente','vendedor','fecha_facturacion','fecha_entrega','tipo_venta']

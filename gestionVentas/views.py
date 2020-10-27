@@ -2,17 +2,17 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from producto.models import Producto
 from django.http import HttpResponse
-from .forms import Historial_Cambios_FORM,NuevaVentaForm,NuevaListaForm,ListaProductosForm
+from .forms import Crear_ventasForm,NuevaVentaForm,NuevaListaForm,ListaProductosForm
 # Create your views here.
 from django.contrib import messages
 from .models import Venta,ListaProductos
 from cliente.models import Cliente
-
+## SOLO EL VENDEDOR PUEDE CREAR VENTAS
 def Crear_venta(request):
     print("Hola"+request.method)
     orden =0
     if request.method == 'POST':
-        form = Historial_Cambios_FORM(request.POST)
+        form = Crear_ventasForm(request.POST)
         form2 = ListaProductosForm(request.POST)
         if form.is_valid():
             orden = form.data['no_orden']
@@ -56,7 +56,7 @@ def Crear_venta(request):
             return redirect('Crear_venta')  
     else:
         #HttpResponse("funciona")
-        form=Historial_Cambios_FORM()
+        form=Crear_ventasForm()
         form2=ListaProductosForm()
     return render(request,'ventas/crear_ventas.html',{'form': form,'form2': form2 })
 

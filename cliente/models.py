@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-
+## SOLO EL VENDEDOR PUEDE CREAR CLIENTES
 class Cliente(models.Model):
     nombre = models.CharField(max_length=150)
     nit = models.CharField(max_length=20)
