@@ -3,7 +3,7 @@ from django.db import models
 from producto.models import Producto
 from cliente.models import Cliente
 # Create your models here.
-
+## SOLO USUARIOS VENDEDOR PUEDEN CREAR VENTAS
 TIPO_VENTA = (
     ('LOCAL','LOCAL'), 
     ('DOMICILIO', 'DOMICILIO'), 

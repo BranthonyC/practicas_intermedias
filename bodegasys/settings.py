@@ -48,10 +48,12 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'producto.apps.ProductoConfig',
     'cliente',
-    'sedes'
+    'sedes',
+    
 
-    #funciones del vendedor
-    'cliente', 
+
+
+    
     'gestionVentas'
     
 ]
