@@ -11,6 +11,8 @@ urlpatterns = [
     path('solicitud_transferencias/',SolicitarTransferencia, name="SolicitarTransferencia"),
     path('ver_solicitudes/',Ver_solicitudes, name="Ver_solicitudes"),
     path('ver_solicitudes/<int:pk>',Aceptar_Solicitudes, name="Aceptar_Solicitudes"),
+
+    #Solo el Repartidor puede entrar aqui
     path('ver_transferencias/',Ver_transferencias, name="Ver_transferencias"),
     path('ver_transferencias/<int:pk>',Aceptar_Trasferencias, name="Aceptar_Trasferencias")
 ]
