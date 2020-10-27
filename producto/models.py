@@ -1,5 +1,6 @@
 from django.db import models
 from repartidor.models import Repartidor
+from users.models import CustomUser
 # Create your models here.
 
 class Producto(models.Model):
@@ -57,7 +58,7 @@ class SolicitudTransferenciaProductos(models.Model):
     bodega_origen=models.CharField(max_length=50)
     bodega_destino=models.CharField(max_length=50)
     estado_transferencia=models.CharField(max_length=20,choices=ESTADO_TRANSFERENCIAS,default='PENDIENTE', editable= False)
-    repartidor_asignado=models.ForeignKey('repartidor.Repartidor',on_delete=models.SET_NULL, null=True)
+    repartidor_asignado=models.ForeignKey('users.CustomUser',on_delete=models.SET_NULL, null=True)
     aceptador=models.CharField(max_length=50,blank=True)
     def __str__(self):
         return str(self.pk)
