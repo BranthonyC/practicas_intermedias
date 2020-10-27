@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import CustomUser
+from django.urls import reverse
 
 
 tipo_estado = (

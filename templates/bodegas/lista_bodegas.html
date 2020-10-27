@@ -21,11 +21,13 @@ Lista de Bodegas
                     <h4><b>Dirección: </b>{{bodega.direccion}}</h4>
                     <h4><b>Estado: </b>{{bodega.estado}}</h4>
                     <h4><b>Encargado: </b>{{bodega.encargado}}</h4><br>
-                    <a style="text-align: center;" href="{% url 'bodega_detail' pk=bodega.pk %}" class="btn btn-warning">
+                    <a style="text-align: center;" href="{% url 'modificar_bodega' id=bodega.pk user_id=user.id %}" class="btn btn-warning">
                         Editar
                     <!--<a style="text-align: center;" href="{% url 'bodega_detail' pk=bodega.pk %}" class="btn btn-info">
                         ver Detalle {{bodega.nombre}}-->
-                    </a>
+                    </a>  -- <a style="text-align: center;" href="{% url 'modificar_bodega' id=bodega.pk user_id=user.id %}" class="btn btn-danger">
+                      Eliminar
+                  </a>
                   </div>
               </div>
             </div>

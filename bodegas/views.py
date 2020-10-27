@@ -49,3 +49,18 @@ def CrearBodega(request, id):
     else:
         form1=bodega_forms()
     return render(request,'bodegas/registro_bodega.html',{'form1': form1})
+
+
+def modificar_bodega(request,id,user_id):
+    bodega = Bodega.objects.get(pk=id)
+    data = {
+        'form': bodega_forms(instance=bodega)
+    }
+    if request.method=="POST":
+        formulario=bodega_forms(data=request.POST, instance=bodega)
+        if formulario.is_valid():
+            formulario.save()
+            data['mensaje'] = "Anotacion modificada correctamente"
+            data['form'] = formulario
+            return HttpResponseRedirect('/lista_bodegas/'+user_id)
+    return render(request, 'bodegas/modificar_bodega.html',data)

@@ -6,6 +6,9 @@ class CustomUser(AbstractUser):
     dpi = models.CharField(max_length=13, default="3025958692359")
     nacimiento = models.DateField(auto_now=False, auto_now_add=False, null=True)
 
+    def __str__(self):
+        return self.dpi + " - " + self.username + " " + self.first_name + " " + self.last_name
+
 
 class Cliente(models.Model):
     nombre = models.CharField(max_length=150)
