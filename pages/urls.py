@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import HomePageView, ClienteListView, ClienteDetailView
-from producto.views import Actualizar_Inventario,Registrar_producto,Historial_productos,SolicitarTransferencia,Ver_solicitudes,Aceptar_Solicitudes
+from producto.views import Actualizar_Inventario,Registrar_producto,Historial_productos,SolicitarTransferencia,Ver_solicitudes,Aceptar_Solicitudes,Ver_transferencias,Aceptar_Trasferencias
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('clientes/', ClienteListView.as_view(), name = 'lista_clientes' ),
@@ -11,7 +11,6 @@ urlpatterns = [
     path('solicitud_transferencias/',SolicitarTransferencia, name="SolicitarTransferencia"),
     path('ver_solicitudes/',Ver_solicitudes, name="Ver_solicitudes"),
     path('ver_solicitudes/<int:pk>',Aceptar_Solicitudes, name="Aceptar_Solicitudes"),
-    
-    
-   
+    path('ver_transferencias/',Ver_transferencias, name="Ver_transferencias"),
+    path('ver_transferencias/<int:pk>',Aceptar_Trasferencias, name="Aceptar_Trasferencias")
 ]

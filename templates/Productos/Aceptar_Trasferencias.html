@@ -1,0 +1,57 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Historial de cambios inventario
+{% endblock title %}
+
+{% block content %}
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>    
+{% endif %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            {% for Solicitud in Solicitudes %}
+            <div class="container text-center pt-5"></div>
+            
+                <center>
+                    <p>Numero solicitud: {{Solicitud.pk}} <a href="{% url 'Aceptar_Trasferencias' pk=Solicitud.pk  %}" class="btn btn-primary">Ver Transferencia</a></p>
+                </center>
+            
+                <hr>
+            {% endfor %}
+        </div>
+<div class="col-4">
+    <div class="container text-center pt-5">
+      <h1>TERMINAR TRANSFERENCIA</h1>
+      <div class='jumbotron'>
+        <center>
+          <div class="text-left" style="max-width:500px">
+                    <p>Id:{{Valor}}</p>        
+                    <p>Solicitante:{{Solicitud_seleccionada.solicitante}}</p>
+                    <p>Tipo de transferencia:{{Solicitud_seleccionada.tipo_transferencia}}</p>
+                    <p>Bodega de origen:{{Solicitud_seleccionada.bodega_origen}}</p>
+                    <p>Bodega de destino:{{Solicitud_seleccionada.bodega_destino}}</p>
+                    <p>Estado transferencia:{{Solicitud_seleccionada.estado_transferencia}}</p>
+            {% if Solicitud_seleccionada %}
+            <form action="{% url 'Aceptar_Trasferencias' pk=Solicitud_seleccionada.pk %}" method="post">
+            {% else %}
+            <form action="{% url 'Ver_transferencias'  %}" method="post">
+            {% endif %}
+              {% csrf_token %}
+              <br>
+              <center><button type="submit" class="btn btn-success btn-lg">Terminar Transferencia</button></center>
+            </form>
+          </div>
+        </center>
+      </div>
+    </div>
+  </div>
+</div></div>
+    <a href="{% url 'Actualizar_Inventario'   %}" class="btn btn-primary">Regresar</a>
+{% endblock content %}
