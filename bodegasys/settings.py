@@ -49,6 +49,11 @@ INSTALLED_APPS = [
     'producto.apps.ProductoConfig',
     'cliente',
     'sedes'
+
+    #funciones del vendedor
+    'cliente', 
+    'gestionVentas'
+    
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
