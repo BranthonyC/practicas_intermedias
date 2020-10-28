@@ -18,7 +18,7 @@ urlpatterns = [
 
     #Solo el Repartidor puede entrar aqui
     path('ver_transferencias/',Ver_transferencias, name="Ver_transferencias"),
-    path('ver_transferencias/<int:pk>',Aceptar_Trasferencias, name="Aceptar_Trasferencias")
+    path('ver_transferencias/<int:pk>',Aceptar_Trasferencias, name="Aceptar_Trasferencias"),
 
     path('crear_ventas/',Crear_venta, name="Crear_venta"),
     #bodegas
