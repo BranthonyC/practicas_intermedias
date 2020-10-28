@@ -48,7 +48,10 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'producto.apps.ProductoConfig',
     'cliente',
-    'repartidor.apps.RepartidorConfig'
+    'repartidor.apps.RepartidorConfig',
+    'sedes',
+    'gestionVentas',
+    'bodegas',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

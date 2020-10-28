@@ -1,0 +1,38 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Lista de Bodegas
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <h1 style="text-align: center;">
+            <a style="text-align: center;" href="{% url 'Registrar_bodega' user.id %}" class="btn btn-success">
+                Crear
+            </a>
+        </h1><br>
+        <div class="row justify-content-center">
+        {% for bodega in lista_bodegas %}
+          <div class="col-5">
+            <div class="container text-center pt-6">
+              <div class='jumbotron' style="background-color: rgb(137, 192, 194);">
+                  <div class="text-left" style="max-width:600px">
+                    <h2 style="text-align: center;"><b>{{bodega.nombre}}</b></h2>
+                    <h4><b>Dirección: </b>{{bodega.direccion}}</h4>
+                    <h4><b>Estado: </b>{{bodega.estado}}</h4>
+                    <h4><b>Encargado: </b>{{bodega.encargado}}</h4><br>
+                    <a style="text-align: center;" href="{% url 'modificar_bodega' id=bodega.pk user_id=user.id %}" class="btn btn-warning">
+                        Editar
+                    <!--<a style="text-align: center;" href="{% url 'bodega_detail' pk=bodega.pk %}" class="btn btn-info">
+                        ver Detalle {{bodega.nombre}}-->
+                    </a>  -- <a style="text-align: center;" href="{% url 'eliminar_bodega' id=bodega.pk user_id=user.id %}" class="btn btn-danger">
+                      Eliminar
+                  </a>
+                  </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+{% endblock content %}
