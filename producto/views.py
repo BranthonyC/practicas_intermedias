@@ -92,7 +92,6 @@ def SolicitarTransferencia(request):
     return render(request,'Productos/SolicitudesTransferencias.html',{'form1': form1,'form2': form2  })
 
 def Ver_solicitudes(request):
-    
     Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='PENDIENTE')
     return render(request,'Productos/Aceptar_solicitudes.html',{'Solicitudes': Solicitudes})
 
