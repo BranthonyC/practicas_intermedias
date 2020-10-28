@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import HomePageView, ClienteListView, ClienteDetailView
-from producto.views import Actualizar_Inventario,Registrar_producto,Historial_productos,SolicitarTransferencia,Ver_solicitudes,Aceptar_Solicitudes
+from producto.views import Actualizar_Inventario,Registrar_producto,Historial_productos,SolicitarTransferencia,Ver_solicitudes,Aceptar_Solicitudes,Ver_transferencias,Aceptar_Trasferencias
 
 from gestionVentas.views import Crear_venta
 from bodegas.views import *
@@ -15,7 +15,11 @@ urlpatterns = [
     path('solicitud_transferencias/',SolicitarTransferencia, name="SolicitarTransferencia"),
     path('ver_solicitudes/',Ver_solicitudes, name="Ver_solicitudes"),
     path('ver_solicitudes/<int:pk>',Aceptar_Solicitudes, name="Aceptar_Solicitudes"),
-    
+
+    #Solo el Repartidor puede entrar aqui
+    path('ver_transferencias/',Ver_transferencias, name="Ver_transferencias"),
+    path('ver_transferencias/<int:pk>',Aceptar_Trasferencias, name="Aceptar_Trasferencias")
+
     path('crear_ventas/',Crear_venta, name="Crear_venta"),
     #bodegas
     path('registrar_bodega/<id>',CrearBodega, name="Registrar_bodega"),
