@@ -54,3 +54,6 @@ class NuevaVentaForm(forms.ModelForm):
         'tipo_venta'
 
         ]
+
+class TerminarVentaForm(forms.Form):
+    aceptador=forms.CharField(max_length=25)
