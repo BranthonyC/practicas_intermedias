@@ -5,14 +5,26 @@ Crear venta
 {% endblock title %}
 
 {% block content %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>    
+{% endif %}
+
+Vendedor: {{user.username}}<br><br>
 <a href="../admin/gestionVentas/venta/" class="btn btn-info">Ver ordenes de venta</a>
 <a href="../admin/gestionVentas/listaproductos/" class="btn btn-info">Ver Detalle de orden</a>
+<a href="../admin/gestionVentas/listaproductos/" class="btn btn-info">Ver productos</a>
 <div class="container">
+
     <div class="row justify-content-center">
       <div class="col-4">
         <div class="container text-center pt-5">
-          <h1>Datos de la venta</h1>
+          
           <div class='jumbotron'>
+          <h1>Datos de la venta</h1>
             <center>
               <div class="text-left" style="max-width:500px">
                 <form action="{% url 'Crear_venta' %}" method="post">
@@ -33,8 +45,9 @@ Crear venta
       </div>
       <div class="col-4">
         <div class="container text-center pt-5">
-          <h1>Productos a agregar</h1>
+          
           <div class='jumbotron'>
+          <h1>Agregar Producto</h1>
             <center>
               <div class="text-left" style="max-width:500px">
                 <form action="{% url 'Crear_venta' %}" method="post">
@@ -46,13 +59,40 @@ Crear venta
                   </div>
                   {% endfor %}
                   <br>
-                  <center><button type="submit" class="btn btn-success btn-lg">Agregar Producto a la orden</button></center>
+                  <center><button type="submit" class="btn btn-success btn-lg">Agregar Producto</button></center>
+                   <div class='text-left'>
+                  
+                  </div>
                 </form>
               </div>
             </center>
           </div>
         </div>
-      </div>
+      </div> <!---sdf-->
+       <div class="col-4">
+        <div class="container text-center pt-5">
+          
+          <div class='jumbotron'>
+          <h1>Ver detalle</h1>
+            <center>
+              <div class="text-left" style="max-width:500px">
+                <form action="{% url 'Crear_venta' %}" method="post">
+                  {% csrf_token %}
+                  {% for field in form4 %}
+                  <div class='form-group'>
+                    <label for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                  </div>
+                  {% endfor %}
+                  <br>
+                  <center><button type="submit" class="btn btn-success btn-lg">Ver detalle</button></center>
+                  
+                </form>
+              </div>
+            </center>
+          </div>
+        </div>
+      </div> <!---sdf-->
       
     </div>
   </div>

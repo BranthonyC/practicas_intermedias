@@ -1,0 +1,91 @@
+<DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=devide-width, initial-scale=1.0">
+    <title>Factura Venta</title>
+
+    <style>
+        @page{
+            size:"A4";
+            margin:2.5cm 1.5cm 3.5cm 1.5cm;
+
+            @top-center{
+                content:"Sistema de Bodegas - Proyecto Clase"
+            }
+
+            @bottom-right{
+                content = "Page " counter(page) " of " counter(pages);
+            }
+        }
+    </style>
+
+</head>
+<body> 
+    <img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fsites.google.com%2Fsite%2Fimagenesdecarrosgratis%2Fhome%2Fcarros-deportivos-lamborghini-aventador-tron_aventador.jpg%3Fattredirects%3D0&imgrefurl=https%3A%2F%2Fsites.google.com%2Fsite%2Fimagenesdecarrosgratis&tbnid=04bBYmB-lXLm6M&vet=12ahUKEwj9hK2_idnsAhUVMlMKHVu_DN4QMygAegUIARCmAQ..i&docid=XwwShbjH_i4KYM&w=1920&h=1080&q=imagen%20de%20carros&ved=2ahUKEwj9hK2_idnsAhUVMlMKHVu_DN4QMygAegUIARCmAQ"
+    />
+    <h1>Detalle Factura</h1>
+    
+    {% if tipo == 'LOCAL' %}
+        <a>Fecha:&nbsp;{{fecha_factura}}<a><br>
+    {% else %}
+        <a>Fecha:&nbsp;{{fecha_factura}}<a><br>
+        <a>Fecha Entrega:&nbsp;{{fecha_entrega}}<a><br>
+    {% endif %}
+    <a>Vendedor:&nbsp;{{vendedor}}<a><br>
+    <a>Cliente:&nbsp;{{cliente}}<a><br>
+    <a>Tipo de venta:&nbsp;{{tipo}}<a><br>
+    
+    <h2>Lista de productos:<h2>
+    <table class="table">
+        
+        <thead class="thead">
+            <tr>
+                <th>Cantidad</th>&nbsp; 
+                <th>Producto</th>&nbsp; 
+                <th><b>Precio<b></th>&nbsp; 
+                <th><b>Subtotal<b></th> 
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for lista in  expenses %}
+                 <tr>
+                    <td><b>{{lista.cantidad}}<b></td> 
+                    <td><b>{{lista.producto}}<b></td> 
+                    <td><b>{{lista.precio}}<b></td> 
+                    <td><b>{{lista.subtotal}}<b></td> 
+                </tr>
+            {% endfor %}
+
+            
+            {% if sub_total == total_recargo %}
+
+                <tr>
+                    <td colspan="3"><b>Total <b></td> 
+                    <td><b>{{sub_total}}<b></td> 
+                    
+                </tr>
+
+            {% else %}
+
+                 <tr>
+                    <td colspan="3"><b>Total<b></td> 
+                    <td><b>{{sub_total}}<b></td> 
+                    
+                </tr>
+
+                 <tr>
+                    <td colspan="3"><b>Total mas recargo(10%)<b></td> 
+                    <td><b>{{total_recargo}}<b></td> 
+                    
+                </tr>
+
+            {% endif %}
+             
+        </tbody>
+
+    </div>
+</body>
+</html>
