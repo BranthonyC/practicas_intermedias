@@ -1,0 +1,27 @@
+{%extends '_base.html'%}
+
+
+{% block content %}
+<div class="row justify-content-center">
+      <div class="col-6">
+          <h3 style="text-align: center;">Modificar Bodega</h3>
+        <div class="container text-center pt-6">
+          <div class='jumbotron' style="background-color: rgb(137, 192, 194);">
+              <div class="text-left" style="max-width:600px">
+                <form action="" method="POST">
+                    {%csrf_token%}
+                    <table>
+                        {{form.as_table}}
+                    </table>
+                    <input class="btn btn-success" type="submit" value="Modificar">
+                    <a class="btn btn-primary" href="{% url 'lista_bodegas' user.id %}">Volver</a>
+                </form>                
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{{mensaje}}
+
+{% endblock %}
+

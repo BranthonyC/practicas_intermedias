@@ -1,0 +1,56 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Historial de cambios inventario
+{% endblock title %}
+
+{% block content %}
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>    
+{% endif %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            {% for Venta in Ventas %}
+            <div class="container text-center pt-5"></div>
+            
+                <center>
+                    <p>Numero venta: {{Venta.pk}} <a href="{% url 'Terminar_Venta' pk=Venta.pk  %}" class="btn btn-primary">Ver Venta</a></p>
+                </center>
+            
+                <hr>
+            {% endfor %}
+        </div>
+<div class="col-4">
+    <div class="container text-center pt-5">
+      <h1>TERMINAR VENTA</h1>
+      <div class='jumbotron'>
+        <center>
+          <div class="text-left" style="max-width:500px">  
+                    <p>Orden:{{Venta_seleccionada.no_orden}}</p>
+                    <p>Cliente:{{Venta_seleccionada.cliente}}</p>
+                    <p>Fecha de facturacion:{{Venta_seleccionada.fecha_facturacion}}</p>
+                    <p>Fecha de Entrega:{{Venta_seleccionada.fecha_entrega}}</p>
+                    <p>Estado de Venta:{{Venta_seleccionada.estado_venta}}</p>
+            {% if Venta_seleccionada %}
+            <form action="{% url 'Terminar_Venta' pk=Venta_seleccionada.pk %}" method="post">
+            {% else %}
+            <form action="{% url 'Ver_ventas'  %}" method="post">
+            {% endif %}
+              {% csrf_token %}
+              <br>
+              <center><button type="submit" class="btn btn-success btn-lg">Terminar Venta</button></center>
+            </form>
+          </div>
+        </center>
+      </div>
+    </div>
+  </div>
+</div></div>
+    <a href="{% url 'Actualizar_Inventario'   %}" class="btn btn-primary">Regresar</a>
+{% endblock content %}

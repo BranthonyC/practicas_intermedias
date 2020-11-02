@@ -58,7 +58,8 @@ class SolicitarTransferenciaForm(forms.ModelForm):
         fields = [
             'tipo_transferencia',
             'bodega_origen',
-            'bodega_destino'
+            'bodega_destino',
+            'repartidor_asignado'
         ]
 
 class DetalleTransferenciasForm(forms.ModelForm):
@@ -71,6 +72,7 @@ class DetalleTransferenciasForm(forms.ModelForm):
         ]
 
 class AceptarTransferenciaForm(forms.Form):
-    repartidor=forms.CharField(max_length=25)
     aceptador=forms.CharField(max_length=25)
-    
+
+class TerminarTransferenciaForm(forms.Form):
+    aceptador=forms.CharField(max_length=25)
