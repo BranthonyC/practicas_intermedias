@@ -1,0 +1,50 @@
+{% extends '_base.html' %}
+{% block title %}
+Lista Orden 
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+  Vendedor: {{user.username}}
+  <br><br>
+
+  <a href="{% url 'export_pdf2' pk=orden %}" class="btn btn-secondary">Generar Factura</a>
+  
+  <a href="../crear_ventas/" class="btn btn-info">Atras</a>
+  
+  <div class="container text-center pt-5"></div>
+    <div class='jumbotron'>
+        <center>
+         <p>Cliente: {{cliente}}
+          <p>Tipo de venta: {{tipo}}
+          
+          {% if tipo == 'LOCAL'  %}
+            <p>Total: {{total}}
+          {% else %}
+            <p>Total: {{total}}
+            <p>Total con recargo: {{tot_desc}}
+          {% endif %}
+          
+
+           <table width="500px" cellpadding="5px" cellspacing="5px" border="1">
+              <tr bgcolor="#CCCCCC">
+                <td><b>CANTIDAD<b></td>  &nbsp;          
+                <td><b>PRODUCTO<b></td> &nbsp; 
+                <td><b>PRECIO<b></td>  &nbsp;
+                <td><b>SUBTOTAL<b></td>  &nbsp;
+              </tr>
+                        
+              {% for lista in lista_productos %}
+                <tr bgcolor="#FF9933">
+                  <td>{{lista.cantidad}}</td> &nbsp;              
+                  <td>{{lista.producto}}</td> &nbsp;
+                  <td>{{lista.precio}}</td> &nbsp;
+                  <td>{{lista.subtotal}}</td> &nbsp;
+                </tr>
+              {% endfor %}
+            </table>
+        </center>
+    </div>
+    </div>
+  </div>
+{% endblock content %}
