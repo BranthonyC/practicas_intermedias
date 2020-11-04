@@ -11,6 +11,7 @@ import random
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 import datetime
+from django.contrib.auth.models import Group 
 ## SOLO USUARIOS VENDEDOR PUEDEN CREAR VENTAS
 
 ## para pdf
@@ -22,119 +23,126 @@ from django.db.models import Sum
 from .admin import ListaAdmin
 
 
+def has_group(user, group_name): 
+    group = Group.objects.get(name=group_name) 
+    return True if group in user.groups.all() else False
+
+
+
 def Crear_venta(request):
-    
-    
-    orden_random = random.randrange(100000)    
-    orden =0
-    if request.method == 'POST':
-        form = Crear_ventaForm(request.POST)
-        form2 = ListaProductosForm(request.POST)
-        form4 = Seleccionar_orden2Form(request.POST)
-        #form_factura1 = Seleccionar_DetalleForm(request.POST)
-        if form.is_valid():
-            
-            #orden = form.data['no_orden']
-            orden = orden_random
-            
-            cliente = form.cleaned_data['cliente']
-            fecha_fac = form.cleaned_data['fecha_facturacion']
-            fecha_entr = form.cleaned_data['fecha_entrega']
-            tipo_venta_v = form.cleaned_data['tipo_venta']
-            
-            vendedor_2 = request.user.username
-            vendedor_v=vendedor_2
-            Clte=Cliente.objects.get(nombre=cliente)
-            crear_orden=Venta(
-                no_orden= orden_random,
-                cliente=Clte,
-                vendedor=vendedor_v,
-                fecha_facturacion = fecha_fac,
-                fecha_entrega = fecha_entr,
-                tipo_venta = tipo_venta_v
+    if has_group(current_user, "Repartidor"):
+        orden_random = random.randrange(100000)    
+        orden =0
+        if request.method == 'POST':
+            form = Crear_ventaForm(request.POST)
+            form2 = ListaProductosForm(request.POST)
+            form4 = Seleccionar_orden2Form(request.POST)
+            #form_factura1 = Seleccionar_DetalleForm(request.POST)
+            if form.is_valid():
                 
-               
-            )
-            crear_orden.save()#Se guarda el historico
-
-        if form2.is_valid():
-            #no_orden2 = form2.cleaned_data['no_orden']
-            #print("orden" + str(no_orden2))
-            
-            producto = form2.cleaned_data['producto']
-            cantidad2 = form2.cleaned_data['cantidad']
-            porcentaje = form2.cleaned_data['porcentaje']
-
-            Prod=Producto.objects.get(nombre=producto)
-            no_orden=Venta.objects.latest('id')
-            econtro=ListaProductos.objects.filter(no_orden=no_orden).filter(producto=producto).values()
-            
-            precio_parcial = cantidad2 * float(Prod.precio)
-            precio_real = precio_parcial
-            descontar = 1
-            if porcentaje == 'SIN_DESCUENTO':
-                precio_real
+                #orden = form.data['no_orden']
+                orden = orden_random
                 
-            elif porcentaje == 'CINCO':
-                print("sdf")
-                precio_real = precio_parcial - (precio_parcial * 0.05)
-                descontar = 0.05
-            elif porcentaje == 'DIEZ':
-                precio_real = precio_parcial - (precio_parcial * 0.10)
-                print("sdf")
-            elif porcentaje == 'QUINCE':
-                print("sdf")
-                precio_real = precio_parcial - (precio_parcial * 0.15)
-            else:
-                descontar = 1
-
-            if econtro.count() == 0:
+                cliente = form.cleaned_data['cliente']
+                fecha_fac = form.cleaned_data['fecha_facturacion']
+                fecha_entr = form.cleaned_data['fecha_entrega']
+                tipo_venta_v = form.cleaned_data['tipo_venta']
                 
-                nueva_orden=ListaProductos(
-                    no_orden= no_orden,
-                    producto=Prod,
-                    cantidad=cantidad2,
-                    precio = Prod.precio,
-                    subtotal = precio_real
+                vendedor_2 = request.user.username
+                vendedor_v=vendedor_2
+                Clte=Cliente.objects.get(nombre=cliente)
+                crear_orden=Venta(
+                    no_orden= orden_random,
+                    cliente=Clte,
+                    vendedor=vendedor_v,
+                    fecha_facturacion = fecha_fac,
+                    fecha_entrega = fecha_entr,
+                    tipo_venta = tipo_venta_v
+                    
+                
                 )
-                nueva_orden.save()
-            else :
-                #sub_temp = cantidad2 * float(Prod.precio)
-                #sub_temp1 = sub_temp - (sub_temp * descontar)
-                modificar_item=ListaProductos.objects.get(no_orden=no_orden,producto=producto)
-                modificar_item.cantidad = cantidad2
-                modificar_item.subtotal = precio_real
-                modificar_item.save()
-                messages.success(request, 'Se agrego')
-            return redirect('Crear_venta')  
-    
-        if form4.is_valid():
-            
-            no_=Venta.objects.latest('id')
-            form_factura1 = Seleccionar_DetalleForm(request.POST)
-            #no_ = form4.cleaned_data['no_orden']
-            venta=Venta.objects.get(no_orden=no_)
-            tipo = venta.tipo_venta
-            context = {}
-            
-            lista_ = ListaProductos.objects.filter(no_orden=no_)
-            total = ListaProductos.objects.filter(no_orden=no_).aggregate(Sum('subtotal'))
-            total_ = total['subtotal__sum']
-            total_descuento = total_
-            if tipo == 'DOMICILIO':
-                total_descuento = total_descuento  + (total_descuento * 0.10)
-            else:
-                total_descuento 
-            #return HttpResponseRedirect('/lista_detalle/'+str(no_))
-            return render(request,'ventas/lista_detalle.html',{'lista_productos' : lista_,'total': total_,'tot_desc':total_descuento,'tipo':tipo,'orden':no_,'cliente':venta.cliente})
-            #return redirect('Crear_venta')
+                crear_orden.save()#Se guarda el historico
+
+            if form2.is_valid():
+                #no_orden2 = form2.cleaned_data['no_orden']
+                #print("orden" + str(no_orden2))
+                
+                producto = form2.cleaned_data['producto']
+                cantidad2 = form2.cleaned_data['cantidad']
+                porcentaje = form2.cleaned_data['porcentaje']
+
+                Prod=Producto.objects.get(nombre=producto)
+                no_orden=Venta.objects.latest('id')
+                econtro=ListaProductos.objects.filter(no_orden=no_orden).filter(producto=producto).values()
+                
+                precio_parcial = cantidad2 * float(Prod.precio)
+                precio_real = precio_parcial
+                descontar = 1
+                if porcentaje == 'SIN_DESCUENTO':
+                    precio_real
+                    
+                elif porcentaje == 'CINCO':
+                    print("sdf")
+                    precio_real = precio_parcial - (precio_parcial * 0.05)
+                    descontar = 0.05
+                elif porcentaje == 'DIEZ':
+                    precio_real = precio_parcial - (precio_parcial * 0.10)
+                    print("sdf")
+                elif porcentaje == 'QUINCE':
+                    print("sdf")
+                    precio_real = precio_parcial - (precio_parcial * 0.15)
+                else:
+                    descontar = 1
+
+                if econtro.count() == 0:
+                    
+                    nueva_orden=ListaProductos(
+                        no_orden= no_orden,
+                        producto=Prod,
+                        cantidad=cantidad2,
+                        precio = Prod.precio,
+                        subtotal = precio_real
+                    )
+                    nueva_orden.save()
+                else :
+                    #sub_temp = cantidad2 * float(Prod.precio)
+                    #sub_temp1 = sub_temp - (sub_temp * descontar)
+                    modificar_item=ListaProductos.objects.get(no_orden=no_orden,producto=producto)
+                    modificar_item.cantidad = cantidad2
+                    modificar_item.subtotal = precio_real
+                    modificar_item.save()
+                    messages.success(request, 'Se agrego')
+                return redirect('Crear_venta')  
         
-    else:
-        #HttpResponse("funciona")
-        form=Crear_ventaForm()
-        form2=ListaProductosForm()
-        form4=Seleccionar_orden2Form()
-    return render(request,'ventas/crear_ventas.html',{'form': form,'form2': form2 ,'form4':form4})
+            if form4.is_valid():
+                
+                no_=Venta.objects.latest('id')
+                form_factura1 = Seleccionar_DetalleForm(request.POST)
+                #no_ = form4.cleaned_data['no_orden']
+                venta=Venta.objects.get(no_orden=no_)
+                tipo = venta.tipo_venta
+                context = {}
+                
+                lista_ = ListaProductos.objects.filter(no_orden=no_)
+                total = ListaProductos.objects.filter(no_orden=no_).aggregate(Sum('subtotal'))
+                total_ = total['subtotal__sum']
+                total_descuento = total_
+                if tipo == 'DOMICILIO':
+                    total_descuento = total_descuento  + (total_descuento * 0.10)
+                else:
+                    total_descuento 
+                #return HttpResponseRedirect('/lista_detalle/'+str(no_))
+                return render(request,'ventas/lista_detalle.html',{'lista_productos' : lista_,'total': total_,'tot_desc':total_descuento,'tipo':tipo,'orden':no_,'cliente':venta.cliente})
+                #return redirect('Crear_venta')
+            
+        else:
+            #HttpResponse("funciona")
+            form=Crear_ventaForm()
+            form2=ListaProductosForm()
+            form4=Seleccionar_orden2Form()
+        return render(request,'ventas/crear_ventas.html',{'form': form,'form2': form2 ,'form4':form4})
+    else: 
+        return render(request,'pages/home.html')
     
 def Agregar_producto(request,no_orden):
     
@@ -235,21 +243,27 @@ def export_pdf2(request,pk):
 
 def Ver_ventas(request):
     current_user = request.user
-    Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
-    return render(request,'Ventas/Terminar_Venta.html',{'Ventas': Ventas, 'Valor':current_user.id})
+    if has_group(current_user, "Repartidor"):
+        Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
+        return render(request,'Ventas/Terminar_Venta.html',{'Ventas': Ventas, 'Valor':current_user.id})
+    else: 
+        return render(request,'pages/home.html')
 
 def Terminar_Venta(request,pk):
     current_user = request.user
-    if request.method=='POST':
-        print("asdsad  "+str(pk))
-        vent=Venta.objects.get(pk=pk)
-        vent.estado_venta="COMPLETADO"
-        vent.save()
-        messages.success(request, 'Se acepto la solicitud '+str(pk)+ ' satisfactoriamente')
-        return redirect('Ver_ventas')
-    if request.method=='GET':
-        print("asdsad  ")
-        Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
-        Sell=Venta.objects.get(pk=pk)
-        form=TerminarVentaForm()
-        return render(request,'Ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
+    if has_group(current_user, "Repartidor"):
+        if request.method=='POST':
+            print("asdsad  "+str(pk))
+            vent=Venta.objects.get(pk=pk)
+            vent.estado_venta="COMPLETADO"
+            vent.save()
+            messages.success(request, 'Se acepto la solicitud '+str(pk)+ ' satisfactoriamente')
+            return redirect('Ver_ventas')
+        if request.method=='GET':
+            print("asdsad  ")
+            Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
+            Sell=Venta.objects.get(pk=pk)
+            form=TerminarVentaForm()
+            return render(request,'Ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
+    else: 
+        return render(request,'pages/home.html')

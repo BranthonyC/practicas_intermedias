@@ -21,14 +21,13 @@ urlpatterns = [
     path('crear_ventas/',Crear_venta, name="Crear_venta"),
     path('export_pdf2/<pk>',export_pdf2, name="export_pdf2"),
     
-
     #Solo el Repartidor puede entrar aqui
     path('ver_transferencias/',Ver_transferencias, name="Ver_transferencias"),
     path('ver_transferencias/<int:pk>',Aceptar_Trasferencias, name="Aceptar_Trasferencias"),
     path('ver_ventas/',Ver_ventas, name="Ver_ventas"),
     path('ver_ventas/<int:pk>',Terminar_Venta, name="Terminar_Venta"),
-
     path('crear_ventas/',Crear_venta, name="Crear_venta"),
+
     #bodegas
     path('registrar_bodega/<id>',CrearBodega, name="Registrar_bodega"),
     path('lista_bodegas/<id>', BodegaListView.as_view(), name = 'lista_bodegas' ),

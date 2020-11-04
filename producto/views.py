@@ -1,8 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.urls import reverse
 from .forms import Historial_Cambios_FORM,ProductoForm,CategoriaForm,DetalleCategoriasForm,SolicitarTransferenciaForm,DetalleTransferenciasForm,AceptarTransferenciaForm,TerminarTransferenciaForm
 from .models import *
+from django.contrib.auth.models import Group 
 # Create your views here.
+
+def has_group(user, group_name): 
+    group = Group.objects.get(name=group_name) 
+    return True if group in user.groups.all() else False
+
+
 def Actualizar_Inventario(request):
     print("Hola"+request.method)
     if request.method == 'POST':
@@ -98,7 +106,10 @@ def Ver_solicitudes(request):
 def Ver_transferencias(request):
     current_user = request.user
     Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='ACEPTADA',repartidor_asignado = current_user.id)
-    return render(request,'Productos/Aceptar_Trasferencias.html',{'Solicitudes': Solicitudes, 'Valor':current_user.id})
+    if has_group(current_user, "Repartidor"):
+        return render(request,'Productos/Aceptar_Trasferencias.html',{'Solicitudes': Solicitudes, 'Valor':current_user.id})
+    else: 
+        return render(request,'pages/home.html')
 
 def Aceptar_Solicitudes(request,pk):
     if request.method=='POST':
@@ -120,16 +131,19 @@ def Aceptar_Solicitudes(request,pk):
 
 def Aceptar_Trasferencias(request,pk):
     current_user = request.user
-    if request.method=='POST':
-        print("asdsad  "+str(pk))
-        soli=SolicitudTransferenciaProductos.objects.get(pk=pk)
-        soli.estado_transferencia="COMPLETADA"
-        soli.save()
-        messages.success(request, 'Se acepto la solicitud '+str(pk)+ ' satisfactoriamente')
-        return redirect('Ver_transferencias')
-    if request.method=='GET':
-        print("asdsad  ")
-        Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='ACEPTADA',repartidor_asignado = current_user.id)
-        Solicitud=SolicitudTransferenciaProductos.objects.get(pk=pk)
-        form=TerminarTransferenciaForm()
-        return render(request,'Productos/Aceptar_Trasferencias.html',{'Solicitud_seleccionada': Solicitud,'Solicitudes': Solicitudes,'form':form})
+    if has_group(current_user, "Repartidor"):
+        if request.method=='POST':
+            print("asdsad  "+str(pk))
+            soli=SolicitudTransferenciaProductos.objects.get(pk=pk)
+            soli.estado_transferencia="COMPLETADA"
+            soli.save()
+            messages.success(request, 'Se acepto la solicitud '+str(pk)+ ' satisfactoriamente')
+            return redirect('Ver_transferencias')
+        if request.method=='GET':
+            print("asdsad  ")
+            Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='ACEPTADA',repartidor_asignado = current_user.id)
+            Solicitud=SolicitudTransferenciaProductos.objects.get(pk=pk)
+            form=TerminarTransferenciaForm()
+            return render(request,'Productos/Aceptar_Trasferencias.html',{'Solicitud_seleccionada': Solicitud,'Solicitudes': Solicitudes,'form':form})
+    else: 
+        return render(request,'pages/home.html')
