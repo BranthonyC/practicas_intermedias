@@ -1,13 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from producto.models import Producto
-<<<<<<< HEAD
 from django.http import HttpResponse,HttpResponseRedirect
 from .forms import Crear_ventaForm,NuevaVentaForm,NuevaListaForm,ListaProductosForm,Seleccionar_ordenForm,Seleccionar_DetalleForm,Seleccionar_orden2Form
-=======
-from django.http import HttpResponse
-from .forms import Crear_ventaForm,NuevaVentaForm,NuevaListaForm,ListaProductosForm,TerminarVentaForm
->>>>>>> 6adccf02f1981d0d644fee99ccb35b8f8793b4d3
 # Create your views here.
 from django.contrib import messages
 from .models import Venta,ListaProductos
@@ -238,9 +233,6 @@ def export_pdf2(request,pk):
 
     return response
 
-<<<<<<< HEAD
-    #return redirect('Crear_venta') 
-=======
 def Ver_ventas(request):
     current_user = request.user
     Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
@@ -261,4 +253,3 @@ def Terminar_Venta(request,pk):
         Sell=Venta.objects.get(pk=pk)
         form=TerminarVentaForm()
         return render(request,'Ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
->>>>>>> 6adccf02f1981d0d644fee99ccb35b8f8793b4d3
