@@ -1,31 +1,31 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from producto.models import Producto
-<<<<<<< HEAD
 from django.http import HttpResponse,HttpResponseRedirect
-from .forms import Crear_ventaForm,NuevaVentaForm,NuevaListaForm,ListaProductosForm,Seleccionar_ordenForm,Seleccionar_DetalleForm,Seleccionar_orden2Form
-=======
-from django.http import HttpResponse
-from .forms import Crear_ventaForm,NuevaVentaForm,NuevaListaForm,ListaProductosForm,TerminarVentaForm
->>>>>>> 6adccf02f1981d0d644fee99ccb35b8f8793b4d3
+from .forms import Crear_ventaForm,NuevaVentaForm,NuevaListaForm,ListaProductosForm,Seleccionar_ordenForm,Seleccionar_DetalleForm,Seleccionar_orden2Form,Reportes_Form
+from .forms import TerminarVentaForm
 # Create your views here.
 from django.contrib import messages
 from .models import Venta,ListaProductos
 from cliente.models import Cliente
+from users.models import CustomUser
 import random
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 import datetime
+
 ## SOLO USUARIOS VENDEDOR PUEDEN CREAR VENTAS
 
 ## para pdf
 from django.template.loader import render_to_string
 from weasyprint import HTML
 import tempfile
-
 from django.db.models import Sum
 from .admin import ListaAdmin
 
+## reportes
+from django.views.generic import TemplateView
+from django.http import JsonResponse
 
 def Crear_venta(request):
     
@@ -116,7 +116,7 @@ def Crear_venta(request):
         if form4.is_valid():
             
             no_=Venta.objects.latest('id')
-            form_factura1 = Seleccionar_DetalleForm(request.POST)
+            #form_factura1 = Seleccionar_DetalleForm(request.POST)
             #no_ = form4.cleaned_data['no_orden']
             venta=Venta.objects.get(no_orden=no_)
             tipo = venta.tipo_venta
@@ -154,7 +154,6 @@ class ListaProductosListView(ListView):
     def get_queryset(self):
         return ListaProductos.objects.filter(no_orden=self.kwargs['no_orden'])
    
-
 def export_pdf(request):
 
     response = HttpResponse(content_type='application/pdf')
@@ -183,7 +182,6 @@ def export_pdf(request):
         response.write(output.read())
 
     return response
-
 
 #def export_pdf2(request,pk):
 def export_pdf2(request,pk):
@@ -238,9 +236,7 @@ def export_pdf2(request,pk):
 
     return response
 
-<<<<<<< HEAD
     #return redirect('Crear_venta') 
-=======
 def Ver_ventas(request):
     current_user = request.user
     Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
@@ -261,4 +257,118 @@ def Terminar_Venta(request,pk):
         Sell=Venta.objects.get(pk=pk)
         form=TerminarVentaForm()
         return render(request,'Ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
->>>>>>> 6adccf02f1981d0d644fee99ccb35b8f8793b4d3
+
+### VISTA PARA REPORTES
+
+class VentaReporteView(TemplateView):
+    template_name = "ventas/reportes.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["qs"] = Venta.objects.all()
+        return context
+
+def MostrarReportes(request):
+   
+    context = {}            
+    #total = [1,2,3,4]
+    total = []
+    clientes = []
+    fuck = Cliente.objects.all()
+    parametro = []
+    vendedores = Venta.objects.values('vendedor').distinct().values()
+    
+    
+    #rep_mes = Venta.objects.filter(fecha_facturacion__month = 6).filter(fecha_facturacion__year = 2021)
+    if request.method =='POST':
+        form_rep = Reportes_Form(request.POST)
+        
+        if form_rep.is_valid():
+            anio = form_rep.cleaned_data['anio']
+            mes = form_rep.cleaned_data['mes']
+            semana_ = form_rep.cleaned_data['semana']
+            tipo = form_rep.cleaned_data['tipo_rep']
+            context['tipo_reporte'] = tipo
+            context['anio'] = anio
+            context['mes'] = mes
+            context['semana'] = semana_
+            context['form_rep'] = form_rep
+            if tipo == 'mes':
+                #total = [1,2,3,4]
+                parametro = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','dicimbre']
+
+                for m in range (12):
+                    sub_= Venta.objects.filter(fecha_facturacion__month = (m+1)).filter(fecha_facturacion__year=anio).count()
+                    total.append(sub_)
+                context['total'] = total
+                context['cl'] = parametro
+                
+                return render(request,'ventas/reportes.html',context)
+                #return render(request,'ventas/reportes.html',{"total":total,"cl":parametro,'form_rep':form_rep,'context':context})
+            elif tipo == 'dia':
+
+                for m in range (30):
+                    sub_= Venta.objects.filter(fecha_facturacion__day = (m+1)).filter(fecha_facturacion__month = mes).filter(fecha_facturacion__year=anio).count()
+                    if sub_ != 0:
+                        total.append(sub_)
+                        parametro.append(m+1)
+                    else :
+                        print("ds")
+                context['total'] = total
+                context['cl'] = parametro
+                return render(request,'ventas/reportes.html',context)
+            
+            elif tipo == 'semana':
+                parametro.append(semana_)
+                #parametro= [49]
+                sub_= Venta.objects.filter(fecha_facturacion__week=semana_).filter(fecha_facturacion__year=2020).count()
+                total.append(sub_)
+                context['total'] = total
+                context['cl'] = parametro
+                return render(request,'ventas/reportes.html',context)
+            
+            elif tipo == 'vendedor_mes':
+                usuarios = request.user.username
+                #parametro.append(usuarios)
+                parametro = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','dicimbre']
+                for m in range (12):
+                    sub_= Venta.objects.filter(vendedor=usuarios).filter(fecha_facturacion__month = (m+1)).filter(fecha_facturacion__year=anio).count()
+                    total.append(sub_)
+
+                #total_ = Venta.objects.filter(vendedor=usuarios).count()
+                #total.append(total_)
+                context['total'] = total
+                context['cl'] = parametro
+                context['vendedor_'] = usuarios
+                return render(request,'ventas/reportes.html',context)
+            elif tipo == 'vendedor_semana':
+                parametro.append(semana_)
+                #parametro= [49]
+                usuarios = request.user.username
+                sub_= Venta.objects.filter(vendedor=usuarios).filter(fecha_facturacion__week=semana_).filter(fecha_facturacion__year=2020).count()
+                total.append(sub_)
+                context['total'] = total
+                context['cl'] = parametro
+                context['vendedor_'] = usuarios
+                return render(request,'ventas/reportes.html',context)
+            else:
+                total = [5,6,7,8]
+            
+        return render(request,'ventas/reportes.html',{"total":total,"cl":parametro,'form_rep':form_rep})
+        #return HttpResponse(mes)
+        
+
+    if request.method=='GET':
+        print("asdsad  ")
+        #Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
+        #Sell=Venta.objects.get(pk=pk)
+        #form=TerminarVentaForm()
+        return render(request,'ventas/reportes.html',{"total":total,"cl":fuck})
+
+        
+
+
+    #return HttpResponse(fuck)
+    #return render(request,'ventas/reportes.html',{"total":total,"cl":fuck})
+    #return render(request,'ventas/reportes.html',{"total":total,"cl":fuck})
+    #return render(request,'ventas/reportes.html',{"context":context})
