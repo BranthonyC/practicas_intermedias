@@ -1,0 +1,96 @@
+{% extends '_base.html' %}
+ 
+{% block title %}
+Reporte Venta
+{% endblock title %}
+
+{%block scripts%}
+
+{%endblock scripts%}
+
+{%block content %}
+<a href="../crear_ventas/" class="btn btn-info">Ventas</a>
+<div class="row-4">
+        <div class="container text-center pt-5">
+          
+          <div class='jumbotron'>
+          <h1>Filtros</h1>
+            <center>
+              <div class="text-left" style="max-width:500px">
+                <form action="{% url 'MostrarReportes' %}" method="post">
+                  {% csrf_token %}
+                  {% for field in form_rep %}
+                  <div class='form-group'>
+                    <label for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                  </div>
+                  {% endfor %}
+                  <br>
+                  <center><button type="submit" class="btn btn-success btn-lg">Ver Reporte</button></center>
+                </form>
+              </div>
+            </center>
+          </div>
+        </div>
+      </div> <!-- fin -->
+    <p>Tipo Reporte: {{tipo_reporte}}</p>
+    {% if tipo_reporte == 'mes' %}<p>Año: {{anio}}</p>
+    {% elif tipo_reporte == 'semana' %}<p>Semana: {{semana}}</p>
+    {% else %}<p>Mes: {{mes}}</p>
+    {% endif %}
+    <br>
+    <p>Total</p>
+    <div id="myChart"></div>
+    <center>
+      <a>{% if tipo_reporte == 'mes' %}Meses{% elif tipo_reporte == 'semana' %}numero de semana{% elif tipo_reporte == 'vendedor_mes' %}vendedor{% else %}dia{% endif %}</a>
+    </center>
+    <br>
+<script>
+
+    
+        var chartData = {
+              "type": "bar",  
+              "title": {    
+                "text": {% if tipo_reporte == 'mes' %}"Ventas totales por mes"{% elif tipo_reporte == 'vendedor_mes' %}'Ventas totales de {{vendedor_}}'{% elif tipo_reporte == 'semana' %}"Ventas totales por semana"{% else %}"Ventas totales por dia"{% endif %}
+              },  
+              "plot": {    
+                "value-box": {      
+                  "text": "%v"    
+                },    
+                "tooltip": {      
+                "text": "%v"    
+                }  
+              },  
+              "legend": {    
+                "toggle-action": "hide",    
+                "header": {      
+                  "text": "Cantidad"    
+                },    
+                "item": {      
+                  "cursor": "pointer"    
+                },    
+                "draggable": true,    
+                "drag-handler": "icon"  
+              },  
+              "scale-x": {    
+                "values": [{% for item in cl %}'{{item}}', {% endfor %}]  
+              },  
+              "series": [    
+                {      
+                  "values": [{% for item2 in total %}{{item2}}, {% endfor %}],      
+                  "text": "Ventas"    
+                },    
+               
+              ]
+              
+        }
+
+        
+        zingchart.render({
+        id: 'myChart',
+        data: chartData
+        });
+    
+</script>
+
+{%endblock content%}

@@ -33,6 +33,31 @@ DETALLE= [
     ('A', '-----'),
     
     ]
+TIPO_REP= [
+    ('mes', 'mes'),
+    ('dia', 'dia'),
+    ('semana', 'semana'),
+    ('vendedor_mes', 'vendedor - mes'),
+    ('vendedor_semana', 'vendedor - semana'),
+    
+    ]
+MES= [
+    ('NO', '---'),
+    ('enero', 'enero'),
+    ('febrero', 'febrero'),
+    ('marzo', 'marzo'),
+    ('abril', 'abril'),
+    ('mayo', 'mayo'),
+    ('junio', 'junio'),
+    ('julio', 'julio'),
+    ('agosto', 'agosto'),
+    ('septiembre', 'septiembre'),
+    ('octubre', 'octubre'),
+    ('noviembre', 'noviembre'),
+    ('diciembre', 'diciembre'),
+    
+    ]
+
 ### SOLO EL USUARIO VENDEDOR PUEDE CREAR UNA NUEVA VENTAS
 class Crear_ventaForm(forms.Form):  
     #no_orden= forms.IntegerField() 
@@ -54,12 +79,20 @@ class Seleccionar_ordenForm(forms.Form):
     desc = forms.CharField(label='Aplicar descuento', widget=forms.Select(choices=DESCUENTO))
 
 class Seleccionar_DetalleForm(forms.Form):   
-    no_orden=forms.ModelChoiceField(queryset=Venta.objects.all(),widget=forms.Select(attrs={'class':'form-control'}))
+    cliente = forms.ModelChoiceField(queryset=Cliente.objects.all(),widget=forms.Select(attrs={'class':'form-control'}))
     tipo_venta = forms.CharField(label='Tipo de descuento', widget=forms.Select(choices=TIPO_DESCUENTO))
 
 class Seleccionar_orden2Form(forms.Form):   
     #no_orden=forms.ModelChoiceField(queryset=Venta.objects.all(),widget=forms.Select(attrs={'class':'form-control'}))
     desc2 = forms.CharField(label='Ordenes', widget=forms.Select(choices=DETALLE))
+
+class Reportes_Form(forms.Form):   
+    #no_orden=forms.ModelChoiceField(queryset=Venta.objects.all(),widget=forms.Select(attrs={'class':'form-control'}))
+    anio = forms.IntegerField()
+    mes = forms.IntegerField(required=False)
+    semana= forms.IntegerField(required=False)
+    tipo_rep = forms.CharField(label='Tipo-reporte:', widget=forms.Select(choices=TIPO_REP))
+    #semana1= forms.IntegerField()
 
 class NuevaListaForm(forms.ModelForm):
     class Meta:
