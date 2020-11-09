@@ -36,7 +36,7 @@ def has_group(user, group_name):
 
 def Crear_venta(request):
     current_user = request.user
-    if has_group(current_user, "Repartidor"):
+    if has_group(current_user, "Vendedor"):
         orden_random = random.randrange(100000)    
         orden =0
         if request.method == 'POST':
