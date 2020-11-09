@@ -148,15 +148,15 @@ def Crear_venta(request):
                 )
                 nueva_orden.save()
                 return render(request,'ventas/lista_detalle.html',{'lista_productos' : lista_,'total': total_,'tot_desc':total_descuento,'tipo':tipo,'orden':no_,'cliente':venta.cliente})
-            else :
+            #else :
                 #sub_temp = cantidad2 * float(Prod.precio)
                 #sub_temp1 = sub_temp - (sub_temp * descontar)
-                modificar_item=ListaProductos.objects.get(no_orden=no_orden,producto=producto)
-                modificar_item.cantidad = cantidad2
-                modificar_item.subtotal = precio_real
-                modificar_item.save()
-                messages.success(request, 'Se agrego')
-            return redirect('Crear_venta')  
+            #    modificar_item=ListaProductos.objects.get(no_orden=no_orden,producto=producto)
+            #    modificar_item.cantidad = cantidad2
+            #    modificar_item.subtotal = precio_real
+            #    modificar_item.save()
+            #    messages.success(request, 'Se agrego')
+            #return redirect('Crear_venta')  
     
         # if form4.is_valid():
             
