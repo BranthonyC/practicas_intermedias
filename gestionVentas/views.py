@@ -139,14 +139,14 @@ def Crear_venta(request):
                     total_descuento 
                 #return HttpResponseRedirect('/lista_detalle/'+str(no_))
                 #return redirect('Crear_venta')
-                nueva_orden=ListaProductos(
-                    no_orden= no_orden,
-                    producto=Prod,
-                    cantidad=cantidad2,
-                    precio = Prod.precio,
-                    subtotal = precio_real
-                )
-                nueva_orden.save()
+                #nueva_orden=ListaProductos(
+                #    no_orden= no_orden,
+                #    producto=Prod,
+                #    cantidad=cantidad2,
+                #    precio = Prod.precio,
+                #    subtotal = precio_real
+                #)
+                #nueva_orden.save()
                 return render(request,'ventas/lista_detalle.html',{'lista_productos' : lista_,'total': total_,'tot_desc':total_descuento,'tipo':tipo,'orden':no_,'cliente':venta.cliente})
             #else :
                 #sub_temp = cantidad2 * float(Prod.precio)
@@ -276,8 +276,7 @@ def Ver_ventas(request):
     current_user = request.user
     if has_group(current_user, "Repartidor"):
         Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
-        VentasTerminadas=Venta.objects.filter(estado_venta='COMPLETADO',repartidor_asignado = current_user.id)
-        return render(request,'ventas/Terminar_Venta.html',{'Ventas': Ventas,'VentasTerminadas': VentasTerminadas, 'Valor':current_user.id})
+        return render(request,'ventas/Terminar_Venta.html',{'Ventas': Ventas, 'Valor':current_user.id})
     else: 
         return render(request,'pages/home.html')
 
@@ -297,10 +296,9 @@ def Terminar_Venta(request,pk):
         if request.method=='GET':
             print("asdsad  ")
             Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
-            VentasTerminadas=Venta.objects.filter(estado_venta='COMPLETADO',repartidor_asignado = current_user.id)
             Sell=Venta.objects.get(pk=pk)
             form=TerminarVentaForm()
-            return render(request,'ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'VentasTerminadas': VentasTerminadas,'Ventas': Ventas,'form':form})
+            return render(request,'ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
     else: 
         return render(request,'pages/home.html')
     if request.method=='POST':
@@ -313,10 +311,9 @@ def Terminar_Venta(request,pk):
     if request.method=='GET':
         print("asdsad  ")
         Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
-        VentasTerminadas=Venta.objects.filter(estado_venta='COMPLETADO',repartidor_asignado = current_user.id)
         Sell=Venta.objects.get(pk=pk)
         form=TerminarVentaForm()
-        return render(request,'ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'VentasTerminadas': VentasTerminadas ,'Ventas': Ventas,'form':form})
+        return render(request,'ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
 
 ### VISTA PARA REPORTES
 
