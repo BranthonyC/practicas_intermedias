@@ -7,7 +7,7 @@ class gestionVentasAdmin(admin.ModelAdmin):
         model = Venta
         list_display = ['no_orden','cliente','vendedor','fecha_facturacion','fecha_entrega','tipo_venta']
         search_fields = ['no_orden']
-        list_filter=['fecha_facturacion','fecha_entrega']
+        list_filter=['fecha_facturacion','fecha_entrega','cliente']
 
 class ListaAdmin(admin.ModelAdmin):
         model = ListaProductos

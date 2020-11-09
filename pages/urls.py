@@ -3,7 +3,7 @@ from .views import HomePageView, ClienteListView, ClienteDetailView
 from producto.views import Actualizar_Inventario,Registrar_producto,Historial_productos,SolicitarTransferencia,Ver_solicitudes,Aceptar_Solicitudes,Ver_transferencias,Aceptar_Trasferencias
 from gestionVentas.views import Ver_ventas,Terminar_Venta
 
-from gestionVentas.views import Crear_venta,ListaProductosListView,export_pdf,export_pdf2,Agregar_producto
+from gestionVentas.views import Crear_venta,ListaProductosListView,export_pdf,export_pdf2,Agregar_producto,VentaReporteView,MostrarReportes
 from bodegas.views import *
 
 urlpatterns = [
@@ -20,14 +20,16 @@ urlpatterns = [
     ## USUARIO VENDEDOR MANEJA ESTAS OPCIONES
     path('crear_ventas/',Crear_venta, name="Crear_venta"),
     path('export_pdf2/<pk>',export_pdf2, name="export_pdf2"),
-    
+    path('Reportes/',VentaReporteView.as_view(),name="reporte"),
+    path('MostrarReportes/',MostrarReportes,name="MostrarReportes"),
+
     #Solo el Repartidor puede entrar aqui
     path('ver_transferencias/',Ver_transferencias, name="Ver_transferencias"),
     path('ver_transferencias/<int:pk>',Aceptar_Trasferencias, name="Aceptar_Trasferencias"),
     path('ver_ventas/',Ver_ventas, name="Ver_ventas"),
     path('ver_ventas/<int:pk>',Terminar_Venta, name="Terminar_Venta"),
     path('crear_ventas/',Crear_venta, name="Crear_venta"),
-
+    #path('crear_ventas/',Crear_venta, name="Crear_venta"),
     #bodegas
     path('registrar_bodega/<id>',CrearBodega, name="Registrar_bodega"),
     path('lista_bodegas/<id>', BodegaListView.as_view(), name = 'lista_bodegas' ),
