@@ -22,7 +22,6 @@
 
       {% if request.user|has_group:"Encargado" %} 
           <a href="{% url 'Registrar_bodega' user.id %}" class="navbar-brand my-0 mr-md-auto font-weight-normal">Mis bodegas</a>
-          <p>moderator</p> 
       {% endif %}
 
       {% endif %}
