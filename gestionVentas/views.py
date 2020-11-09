@@ -158,14 +158,14 @@ def Crear_venta(request):
                 messages.success(request, 'Se agrego')
             return redirect('Crear_venta')  
     
-        if form4.is_valid():
+        # if form4.is_valid():
             
-            no_=Venta.objects.latest('id')
-            #form_factura1 = Seleccionar_DetalleForm(request.POST)
-            #no_ = form4.cleaned_data['no_orden']
-            venta=Venta.objects.get(no_orden=no_)
-            tipo = venta.tipo_venta
-            context = {}
+        #     no_=Venta.objects.latest('id')
+        #     #form_factura1 = Seleccionar_DetalleForm(request.POST)
+        #     #no_ = form4.cleaned_data['no_orden']
+        #     venta=Venta.objects.get(no_orden=no_)
+        #     tipo = venta.tipo_venta
+        #     context = {}
             
         else:
             #HttpResponse("funciona")
