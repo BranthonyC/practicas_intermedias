@@ -51,6 +51,29 @@ Historial de cambios inventario
       </div>
     </div>
   </div>
-</div></div>
+</div>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Orden</th>
+      <th scope="col">Cliente</th>
+      <th scope="col">Fecha Facturacion</th>
+      <th scope="col">Fecha Entrega</th>
+      <th scope="col">Estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for Venta in VentasTerminadas %}
+      <tr>
+        <th scope="row">{{Venta.no_orden}}</th>
+        <td>{{Venta.cliente}}</td>
+        <td>{{Venta.fecha_facturacion}}</td>
+        <td>{{Venta.fecha_entrega}}</td>
+        <td>{{Venta.estado_venta}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
     <a href="{% url 'Actualizar_Inventario'   %}" class="btn btn-primary">Regresar</a>
 {% endblock content %}

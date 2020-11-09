@@ -51,6 +51,29 @@ Historial de cambios inventario
       </div>
     </div>
   </div>
-</div></div>
+</div>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Solicitante</th>
+      <th scope="col">Tipo transferencia</th>
+      <th scope="col">Origen</th>
+      <th scope="col">Destino</th>
+      <th scope="col">Estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for Solicitud in SolicitudesTerminadas %}
+      <tr>
+        <th scope="row">{{Solicitud.solicitante}}</th>
+        <td>{{Solicitud.tipo_transferencia}}</td>
+        <td>{{Solicitud.bodega_origen}}</td>
+        <td>{{Solicitud.bodega_destino}}</td>
+        <td>{{Solicitud.estado_transferencia}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
     <a href="{% url 'Actualizar_Inventario'   %}" class="btn btn-primary">Regresar</a>
 {% endblock content %}

@@ -115,8 +115,9 @@ def Ver_solicitudes(request):
 def Ver_transferencias(request):
     current_user = request.user
     Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='ACEPTADA',repartidor_asignado = current_user.id)
+    SolicitudesTerminadas=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='COMPLETADA',repartidor_asignado = current_user.id)
     if has_group(current_user, "Repartidor"):
-        return render(request,'Productos/Aceptar_Trasferencias.html',{'Solicitudes': Solicitudes, 'Valor':current_user.id})
+        return render(request,'Productos/Aceptar_Trasferencias.html',{'Solicitudes': Solicitudes,'SolicitudesTerminadas': SolicitudesTerminadas, 'Valor':current_user.id})
     else: 
         return render(request,'pages/home.html')
 
@@ -164,8 +165,9 @@ def Aceptar_Trasferencias(request,pk):
         if request.method=='GET':
             print("asdsad  ")
             Solicitudes=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='ACEPTADA',repartidor_asignado = current_user.id)
+            SolicitudesTerminadas=SolicitudTransferenciaProductos.objects.filter(estado_transferencia='COMPLETADA',repartidor_asignado = current_user.id)
             Solicitud=SolicitudTransferenciaProductos.objects.get(pk=pk)
             form=TerminarTransferenciaForm()
-            return render(request,'Productos/Aceptar_Trasferencias.html',{'Solicitud_seleccionada': Solicitud,'Solicitudes': Solicitudes,'form':form})
+            return render(request,'Productos/Aceptar_Trasferencias.html',{'Solicitud_seleccionada': Solicitud,'Solicitudes': Solicitudes, 'SolicitudesTerminadas': SolicitudesTerminadas,'form':form})
     else: 
         return render(request,'pages/home.html')
