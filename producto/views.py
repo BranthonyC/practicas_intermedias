@@ -85,11 +85,20 @@ def SolicitarTransferencia(request):
             producto=form1.save(commit=False)
             producto.solicitante="Usuario Bodeguero"
             producto.estado_transferencia="PENDIENTE"
+            producto.repartidor_asignado.email
+            from django.core.mail import send_mail
+            send_mail(
+                'Transferencia {0}'.format(producto.tipo_transferencia),
+                'Nueva transferencia \nOrigen: {0}\nDestino: {1}\nIngresa a tu perfil para ver los detalles completos.'.format(producto.bodega_origen, producto.bodega_destino),
+                'sysbodega1@gmail.com',
+                [producto.repartidor_asignado.email],
+                fail_silently=False,
+            )
             producto.save()
             messages.success(request, 'Solicitud realizada correctamente, numero transferencia: '+str(producto.pk))
+
             return redirect('SolicitarTransferencia')  
         elif form2.is_valid():
-            print("FORM2")
             categoria=form2.save(commit=False)
             categoria.save()
             messages.success(request, 'Peticion de productos registrada correctamente')
@@ -120,7 +129,20 @@ def Aceptar_Solicitudes(request,pk):
             soli=SolicitudTransferenciaProductos.objects.get(pk=pk)
             soli.aceptador=acept
             soli.estado_transferencia="ACEPTADA"
+            from django.core.mail import send_mail
+            send_mail(
+                'Transferencia {0} Aceptada'.format(soli.tipo_transferencia),
+                'Se completo con exito la transferencia por parte de {0}\nOrigen:{1}\nDestino:{2}'.format(
+                    soli.solicitante,
+                    soli.bodega_origen,
+                    soli.bodega_destino
+                ),
+                'sysbodega1@gmail.com',
+                [soli.repartidor_asignado.email],
+                fail_silently=False,
+            )
             soli.save()
+
             messages.success(request, 'Se acepto la solicitud '+str(pk)+ ' satisfactoriamente')
             return redirect('Ver_solicitudes')
     if request.method=='GET':

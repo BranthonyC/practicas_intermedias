@@ -34,7 +34,47 @@
       {% if user.is_authenticated %}
 
       {% if request.user|has_group:"Encargado" %} 
+          <strong>Encargado</strong>
           <a href="{% url 'Registrar_bodega' user.id %}" class="navbar-brand my-0 mr-md-auto font-weight-normal">Mis bodegas</a>
+      {% endif %}
+
+      {% if request.user|has_group:"Vendedor" %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <strong>Vendedor</strong>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'Crear_venta' %}">Crear Venta</a>
+          <a class="dropdown-item" href="{% url 'reporte' %}">Reportes</a>
+          <a class="dropdown-item" href="{% url 'MostrarReportes' %}">Mostrar Reportes</a>
+          <a class="dropdown-item" href="{% url 'lista_clientes' %}">Clientes</a>
+        </div>
+      </li>
+      {% endif %}
+      {% if request.user|has_group:"Bodeguero" %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <strong>Bodeguero</strong>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'Actualizar_Inventario' %}">Actualizar_Inventario</a>
+          <a class="dropdown-item" href="{% url 'Registrar_producto' %}">Registrar_producto</a>
+          <a class="dropdown-item" href="{% url 'Historial_productos' %}">Historial_productos</a>
+          <a class="dropdown-item" href="{% url 'SolicitarTransferencia' %}">SolicitarTransferencia</a>
+          <a class="dropdown-item" href="{% url 'Ver_solicitudes' %}">Ver_solicitudes</a>
+        </div>
+      </li>
+      {% endif %}
+      {% if request.user|has_group:"Repartidor" %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <strong>Repartidor</strong>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'Ver_transferencias' %}">Ver_transferencias</a>
+            <a class="dropdown-item" href="{% url 'Ver_ventas' %}">Ver_ventas</a>
+          </div>
+        </li>
       {% endif %}
 
       {% endif %}

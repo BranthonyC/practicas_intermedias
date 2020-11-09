@@ -287,6 +287,9 @@ def Terminar_Venta(request,pk):
             vent=Venta.objects.get(pk=pk)
             vent.estado_venta="COMPLETADO"
             vent.save()
+            
+
+
             messages.success(request, 'Se acepto la solicitud '+str(pk)+ ' satisfactoriamente')
             return redirect('Ver_ventas')
         if request.method=='GET':

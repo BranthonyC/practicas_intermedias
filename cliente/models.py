@@ -7,6 +7,7 @@ class Cliente(models.Model):
     nit = models.CharField(max_length=20)
     dpi = models.CharField(max_length=20)
     direccion = models.CharField(max_length=150)
+    # email = models.CharField(max_length=50)
 
     class Meta:
         verbose_name = "Cliente"
