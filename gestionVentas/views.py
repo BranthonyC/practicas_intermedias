@@ -276,7 +276,7 @@ def Ver_ventas(request):
     current_user = request.user
     if has_group(current_user, "Repartidor"):
         Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
-        return render(request,'Ventas/Terminar_Venta.html',{'Ventas': Ventas, 'Valor':current_user.id})
+        return render(request,'ventas/Terminar_Venta.html',{'Ventas': Ventas, 'Valor':current_user.id})
     else: 
         return render(request,'pages/home.html')
 
@@ -298,7 +298,7 @@ def Terminar_Venta(request,pk):
             Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
             Sell=Venta.objects.get(pk=pk)
             form=TerminarVentaForm()
-            return render(request,'Ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
+            return render(request,'ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
     else: 
         return render(request,'pages/home.html')
     if request.method=='POST':
@@ -313,7 +313,7 @@ def Terminar_Venta(request,pk):
         Ventas=Venta.objects.filter(estado_venta='PENDIENTE',repartidor_asignado = current_user.id)
         Sell=Venta.objects.get(pk=pk)
         form=TerminarVentaForm()
-        return render(request,'Ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
+        return render(request,'ventas/Terminar_Venta.html',{'Venta_seleccionada': Sell,'Ventas': Ventas,'form':form})
 
 ### VISTA PARA REPORTES
 
